@@ -1,0 +1,43 @@
+.app {
+    background-color: blue;
+    text-align: center;
+    padding: 15px;
+}
+h1, h2, h3, h4, h5, h6 {
+    color: pink;
+    font-family: impact;
+}
+p {
+    background-color: white;
+    color: navy;
+    font-family: comic sans ms;
+    font-size: 30px;
+}
+li h1, li h2, li h3, li h4, li h5, li h6, li p{
+    margin: 10px;
+}
+input {
+    display: block;
+    margin: 10px auto;
+    padding: 8px;
+    font-size: 30px;
+    color: gray;
+}
+textarea {
+    display: block;
+    margin: 10px auto;
+    padding: 8px;
+    color: gray;
+}
+button {
+    font-size: 30px;
+    font-family: comic sans ms;
+    color: purple;
+    background-color: cyan;
+    border: 5px groove black;
+    margin-bottom: 10px;
+}
+button:hover {
+    background-color: purple;
+    color: cyan;
+}

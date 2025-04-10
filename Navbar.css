@@ -1,0 +1,42 @@
+/* Navbar container */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: navy;
+  padding: 15px 20px;
+}
+
+/* Website logo */
+.logo {
+  font-size: 30px;
+  font-weight: bold;
+  color: fuchsia;
+  font-family: impact;
+}
+
+/* Navigation links */
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 10px;
+}
+
+.nav-links li {
+  display: inline;
+}
+
+/* Link styles */
+.nav-links a {
+  text-decoration: none;
+  color: red;
+  font-size: 18px;
+  padding: 8px 12px;
+  border-radius: 5px;
+  font-family: comic sans ms;
+}
+
+.nav-links a:hover {
+  background-color: maroon;
+  color: cyan;
+}
