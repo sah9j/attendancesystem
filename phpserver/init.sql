@@ -34,11 +34,11 @@ CREATE TABLE IF NOT EXISTS course_enrollment (
   FOREIGN KEY (course) REFERENCES courses(name) ON DELETE CASCADE
 );
 
--- Seed users
+-- Seed users (passwords: 'password123', 'userpass', 'adminpass')
 INSERT INTO users (name, username, password, role) VALUES
-('Alice Smith', 'asmith', 'password123', 'user'),
-('Bob Johnson', 'bjohnson', 'securepass', 'user'),
-('Dr. Admin', 'admin', 'adminpass', 'admin');
+('Alice Smith', 'asmith', '$2y$10$I8/Kpdl/fGn2kve1FPQVvOLvzGKeL9Kxhq99RE.ahzZ4eoJ6pdFwu', 'user'),
+('Bob Johnson', 'bjohnson', '$2y$10$ly0ggKn.5R.FAD1q82lGC.yrieZn4SKU9F3CLc2cp7wXRAMVwjrSW', 'user'),
+('Dr. Admin', 'admin', '$2y$10$DilsGBu4Cw3gcJ7AprE8ReziRioeWgj70gHOSus.hYMiHNUgUFOr6', 'admin');
 
 -- Seed courses
 INSERT INTO courses (name) VALUES

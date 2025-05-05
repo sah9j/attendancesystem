@@ -9,7 +9,7 @@ const MarkAttendancePage = () => {
 
   // Fetch courses
   useEffect(() => {
-    fetch('http://localhost:8000/api/courses')
+    fetch('/api/courses')
       .then(res => res.json())
       .then(data => setCourses(data))
       .catch(err => console.error('Error fetching courses:', err));
@@ -70,6 +70,7 @@ const MarkAttendancePage = () => {
 
   return (
     <div style={{ padding: '20px' }}>
+      <TeacherNavbar />
       <h2>Mark Attendance</h2>
 
       <label>Select Course: </label>
