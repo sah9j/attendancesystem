@@ -9,7 +9,7 @@ const MarkAttendancePage = () => {
 
   // Fetch courses
   useEffect(() => {
-    fetch('/api/courses')
+    fetch('http://localhost:8000/api/courses')
       .then(res => res.json())
       .then(data => setCourses(data))
       .catch(err => console.error('Error fetching courses:', err));
@@ -17,22 +17,24 @@ const MarkAttendancePage = () => {
 
   // Fetch students for selected course
   useEffect(() => {
-    if (!selectedCourse) return;
+  fetch('http://localhost/your-api-endpoint/getReport.php')
+    .then(response => response.json())
+    .then(data => {
+      console.log('Courses fetched:', data);
+      if (Array.isArray(data)) {
+        setCourses(data);
+      } else {
+        console.error('Unexpected data format:', data);
+        setCourses([]);
+      }
+    })
+    .catch(error => {
+      console.error('Error fetching courses:', error);
+      setCourses([]);
+    });
+  }, []);
 
-    fetch('http://localhost:8000/api/course_enrollment')
-      .then(res => res.json())
-      .then(data => {
-        const filtered = data.filter(item => item.course === selectedCourse);
-        const studentNames = filtered.map(item => item.studentName);
-        setStudents(studentNames);
-
-        const defaultStatus = {};
-        studentNames.forEach(name => defaultStatus[name] = 'Present');
-        setAttendance(defaultStatus);
-      })
-      .catch(err => console.error('Error fetching students:', err));
-  }, [selectedCourse]);
-
+  //Track changes to attendance status
   const handleStatusChange = (studentName, status) => {
     setAttendance(prev => ({
       ...prev,
