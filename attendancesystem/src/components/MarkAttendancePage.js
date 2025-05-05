@@ -85,9 +85,9 @@ const MarkAttendancePage = () => {
   };
 
   return (
-    <div className="mark-attendance">
+    <div style={{ padding: '20px' }}>
       <TeacherNavbar />
-      <h1>Mark Attendance</h1>
+      <h2>Mark Attendance</h2>
 
       <label>Select Course: </label>
     <select onChange={e => setSelectedCourse(e.target.value)} value={selectedCourse}>
