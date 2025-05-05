@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import TeacherNavbar from './TeacherNavbar';
+import './MarkAttendancePage.css'
 
 const MarkAttendancePage = () => {
   const [courses, setCourses] = useState([]);
@@ -7,7 +8,7 @@ const MarkAttendancePage = () => {
   const [students, setStudents] = useState([]);
   const [attendance, setAttendance] = useState({});
 
-  // Fetch courses
+  //Fetch courses
   useEffect(() => {
     fetch('http://localhost:8000/api/courses')
       .then(res => res.json())
@@ -15,7 +16,7 @@ const MarkAttendancePage = () => {
       .catch(err => console.error('Error fetching courses:', err));
   }, []);
 
-  // Fetch students for selected course
+  //Fetch students for selected course
   useEffect(() => {
   fetch('http://localhost/your-api-endpoint/getReport.php')
     .then(response => response.json())
@@ -43,42 +44,42 @@ const MarkAttendancePage = () => {
   };
 
   const handleSubmit = async () => {
-  const today = new Date().toISOString().split('T')[0];
-  const payload = students.map(name => ({
-    username: name, // Or `studentUsername` if that's what your backend expects
-    course: selectedCourse,
-    attendance: attendance[name],
-    date: today
-  }));
+    const today = new Date().toISOString().split('T')[0];
+    const payload = students.map(name => ({
+      username: name,
+      course: selectedCourse,
+      attendance: attendance[name],
+      date: today
+    }));
 
-  try {
-    const response = await fetch('http://localhost:8000/api/attendance', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
+    try {
+      const response = await fetch('http://localhost:8000/api/attendance', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`HTTP error! ${response.status}: ${errorText}`);
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`HTTP error! ${response.status}: ${errorText}`);
+      }
+
+      alert('Attendance submitted successfully!');
+    } catch (err) {
+      console.error('Error submitting attendance:', err);
+      alert('Failed to submit attendance.');
     }
-
-    alert('Attendance submitted successfully!');
-  } catch (err) {
-    console.error('Error submitting attendance:', err);
-    alert('Failed to submit attendance.');
-  }
-};
+  };
 
   return (
-    <div style={{ padding: '20px' }}>
+    <div className="mark-attendance">
       <TeacherNavbar />
-      <h2>Mark Attendance</h2>
+      <h1>Mark Attendance</h1>
 
       <label>Select Course: </label>
       <select onChange={e => setSelectedCourse(e.target.value)} value={selectedCourse}>
         <option value="">-- Select --</option>
-        {courses.map(course => (
+        {Array.isArray(courses) && courses.map(course => (
           <option key={course.course} value={course.course}>{course.course}</option>
         ))}
       </select>
