@@ -85,7 +85,7 @@ const MarkAttendancePage = () => {
   };
 
   return (
-    <div style={{ padding: '20px' }}>
+    <div className="mark-attendance">
       <TeacherNavbar />
       <h2>Mark Attendance</h2>
 
