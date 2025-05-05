@@ -1,1 +1,17 @@
-
+.mark-attendance {
+    background-color: lightcyan
+}
+.mark-attendance h1{
+    color: navy;
+    margin: 3rem;
+}
+.mark-attendance h2{
+    color: navy;
+    font-size: 3rem;
+}
+.mark-attendance p, .mark-attendance h3, .mark-attendance tr, .mark-attendance th, .mark-attendance td{
+    color: orange;
+}
+.mark-attendance table{
+    margin-bottom: 3rem;
+}
