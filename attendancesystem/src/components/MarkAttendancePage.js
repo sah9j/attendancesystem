@@ -10,38 +10,44 @@ const MarkAttendancePage = () => {
 
   //Fetch courses
   useEffect(() => {
-    fetch('http://localhost:8000/api/courses')
-      .then(res => res.json())
-      .then(data => setCourses(data))
-      .catch(err => console.error('Error fetching courses:', err));
+    fetch('http://localhost/your-api-endpoint/getCourses.php')
+      .then(response => response.json())
+      .then(data => {
+        console.log('Courses fetched:', data);
+        setCourses(Array.isArray(data) ? data : []);
+      })
+      .catch(error => {
+        console.error('Error fetching courses:', error);
+        setCourses([]);
+      });
   }, []);
 
   //Fetch students for selected course
   useEffect(() => {
-  fetch('http://localhost/your-api-endpoint/getReport.php')
-    .then(response => response.json())
-    .then(data => {
-      console.log('Courses fetched:', data);
-      if (Array.isArray(data)) {
-        setCourses(data);
-      } else {
-        console.error('Unexpected data format:', data);
-        setCourses([]);
-      }
-    })
-    .catch(error => {
-      console.error('Error fetching courses:', error);
-      setCourses([]);
-    });
-  }, []);
+  if (!selectedCourse) return;
 
-  //Track changes to attendance status
-  const handleStatusChange = (studentName, status) => {
-    setAttendance(prev => ({
-      ...prev,
-      [studentName]: status
-    }));
-  };
+  fetch('http://localhost/your-api-endpoint/getEnrolledStudents.php', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ course: selectedCourse })
+  })
+    .then(res => res.json())
+    .then(data => {
+      console.log('Students fetched:', data);
+      const studentNames = data.map(item => item.name); // Adjust based on response
+      setStudents(studentNames);
+
+      const defaultStatus = {};
+      studentNames.forEach(name => defaultStatus[name] = 'Present');
+      setAttendance(defaultStatus);
+    })
+    .catch(err => {
+      console.error('Error fetching students:', err);
+      setStudents([]);
+    });
+  }, [selectedCourse]);
 
   const handleSubmit = async () => {
     const today = new Date().toISOString().split('T')[0];
@@ -72,15 +78,15 @@ const MarkAttendancePage = () => {
   };
 
   return (
-    <div className="mark-attendance">
+    <div style={{ padding: '20px' }}>
       <TeacherNavbar />
-      <h1>Mark Attendance</h1>
+      <h2>Mark Attendance</h2>
 
       <label>Select Course: </label>
       <select onChange={e => setSelectedCourse(e.target.value)} value={selectedCourse}>
         <option value="">-- Select --</option>
-        {Array.isArray(courses) && courses.map(course => (
-          <option key={course.course} value={course.course}>{course.course}</option>
+        {courses.map((course, index) => (
+         <option key={index} value={course.course}>{course.course}</option>
         ))}
       </select>
 
