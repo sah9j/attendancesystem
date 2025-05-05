@@ -1,17 +1,31 @@
 .mark-attendance {
-    background-color: lightcyan
-}
-.mark-attendance h1{
+    background-color: lightcyan;
+  }
+  .mark-attendance h1{
     color: navy;
     margin: 3rem;
-}
-.mark-attendance h2{
-    color: navy;
-    font-size: 3rem;
-}
-.mark-attendance p, .mark-attendance h3, .mark-attendance tr, .mark-attendance th, .mark-attendance td{
-    color: orange;
-}
-.mark-attendance table{
-    margin-bottom: 3rem;
-}
+  }
+  .mark-attendance p{
+    text-align: center;
+  }
+  .mark-attendance td, .mark-attendance th{
+    color: darkorange;
+  }
+  .mark-attendance label{
+    color: darkorange;
+    text-align: center;
+    display: block;
+  }
+  .mark-attendance select {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 2rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    font-family: comic sans ms;
+  }
+  .mark-attendance table{
+    margin-left: auto;
+    margin-right: auto;
+  }
