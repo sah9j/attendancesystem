@@ -19,7 +19,7 @@ $host = 'localhost';
 $port = 3306;
 $db = 'school_management';
 $user = 'root';
-$pass = 'S3h3693sAm258!';
+$pass = '';
 
 $conn = new mysqli($host, $user, $pass, null, $port);
 
