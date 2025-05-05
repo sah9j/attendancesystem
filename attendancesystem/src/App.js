@@ -8,6 +8,7 @@ import TeacherHome from './components/TeacherHome';
 import ViewAttendanceHistory from './components/view-attendance-history';
 import ViewAttendancePercentage from './components/view-attendance-percentage';
 import ReportPage from './components/generalReport';
+import MarkAttendancePage from './components/MarkAttendancePage';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
         <Route path="/view-attendance-percentage" element={<ViewAttendancePercentage username={username} />} />
         <Route path="/generate-report" element={<ReportPage />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/mark-attendance" element={<MarkAttendancePage/>}/>
       </Routes>
     </Router>
   );
