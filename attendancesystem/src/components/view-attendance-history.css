@@ -5,6 +5,14 @@
     color: brown;
     margin: 3rem;
 }
-.view-attendance-history p, .view-attendance-history h3, .view-attendance-history tr, .view-attendance-history th{
+.view-attendance-history h2{
+    color: brown;
+    font-size: 3rem;
+}
+.view-attendance-history p, .view-attendance-history h3, .view-attendance-history tr, 
+.view-attendance-history th, .view-attendance-history td{
     color: purple;
+}
+.view-attendance-history table{
+    margin-bottom: 3rem;
 }

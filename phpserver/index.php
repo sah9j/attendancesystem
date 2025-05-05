@@ -47,34 +47,27 @@ if ($request === '/api/ping' && $method === 'GET') {
     echo json_encode(["message" => "React successfully called the PHP API!"]);
 } elseif ($request === '/api/login' && $method === 'POST') {
     $data = json_decode(file_get_contents('php://input'), true);
-    //$sql = "CALL get_user(?, ?)";
-    $sql = "SELECT name, role FROM users WHERE username = ? AND password = ?";
+    $sql = "CALL get_password(?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ss", $data['username'], $data['password']);
+    $stmt->bind_param("s", $data['username']);
     $stmt->execute();
     $result = $stmt->get_result();
-    $data = $result->fetch_all(MYSQLI_ASSOC);
+    $hashword = $result->fetch_all(MYSQLI_ASSOC);
     $stmt->close();
-    if (empty($data)) {
-        http_response_code(401);
-        echo json_encode(["error" => "Invalid username or password"]);
+    if (password_verify($data['password'], $hashword[0]['password'])) {
+        echo json_encode(["message" => "Login successful!", "data" => $hashword[0]]);
     }
     else {
-        echo json_encode(["message" => "Login successful!", "data" => $data]);
+        echo json_encode(["error" => "Invalid username or password"]);
     }
 } elseif ($request === '/api/register' && $method === 'POST') {
     $data = json_decode(file_get_contents('php://input'), true);
     $student_name = $data['firstName'] . " " . $data['lastName'];
-    $role = '';
-    if ($data['role'] === 'student') {
-        $role = 'user';
-    } else if ($data['role'] === 'teacher') {
-        $role = 'admin';
-    } 
+    $hash = password_hash($data['password'], PASSWORD_DEFAULT);
     $sql = "CALL create_user(?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("ssss", $student_name, 
-    $data['username'], $data['password'], $role);
+    $data['username'], $hash, $data['role']);
 
     if ($stmt->execute()) {
         echo json_encode(["message" => "Registration Successful"]);
@@ -83,6 +76,24 @@ if ($request === '/api/ping' && $method === 'GET') {
         echo json_encode(["error" => "Registration failed"]);
     }
     $stmt->close();
+
+
+    if ($data['role'] === 'user') {
+        $sql = "CALL create_enrollment(?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ss", $student_name, $data['course_name']);
+        if ($stmt->execute()) {
+        echo json_encode(["message" => "Registration Successful"]);
+    } else {
+        http_response_code(500);
+        echo json_encode(["error" => "Registration failed"]);
+    }
+        $stmt->close();
+    } else if ($data['role'] === 'teacher') {
+        $role = 'admin';
+    } 
+
+
 
 } elseif ($request === '/api/attendance' && $method === 'GET') {
     getAttendance($conn);
@@ -242,19 +253,6 @@ function getCourse_Enrollment($conn) {
 }
 
 function initDatabase($conn) {
-    $sql = file_get_contents('init.sql');
-    if ($conn->multi_query($sql)) {
-        do {
-            if ($result = $conn->store_result()) {
-                $result->free();
-            }
-        } while ($conn->more_results() && $conn->next_result());
-    } else {
-        http_response_code(500);
-        echo json_encode(["error" => "Error initializing database: " . $conn->error]);
-        exit;
-    }
-
     $sql = file_get_contents('functions.sql');
     if ($conn->multi_query($sql)) {
         do {

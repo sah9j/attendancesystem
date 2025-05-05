@@ -97,7 +97,7 @@ function ViewAttendancePercentage({username}) {
                     <p>No attendance records found.</p>
                 ) : (
                     <div className="percentage-container">
-                        <table>
+                        <table border="1" cellPadding="8" cellSpacing="0">
                             <thead>
                                 <tr>
                                     <th>Course</th>

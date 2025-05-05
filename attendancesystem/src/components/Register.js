@@ -155,8 +155,8 @@ const Register = () => {
               className={errors.role ? 'error' : ''}
             >
               <option value="">Select role</option>
-              <option value="student">Student</option>
-              <option value="teacher">Teacher</option>
+              <option value="user">Student</option>
+              <option value="admin">Teacher</option>
             </select>
             {errors.role && <span className="error-message">{errors.role}</span>}
           </div>

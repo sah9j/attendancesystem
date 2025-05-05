@@ -70,7 +70,7 @@ function ViewAttendanceHistory({username}) {
           Object.keys(attendanceByClass).map((course) => (
             <div key={course} className="course-attendance">
               <h2>{course}</h2>
-              <table>
+              <table border="1" cellPadding="8" cellSpacing="0">
                 <thead>
                   <tr>
                     <th>Date</th>
