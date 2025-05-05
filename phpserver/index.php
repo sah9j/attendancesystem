@@ -29,8 +29,6 @@ if ($conn->connect_error) {
     exit;
 }
 
-initDatabase($conn);
-
 // Simple router using the REQUEST_URI
 $request = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
@@ -250,19 +248,5 @@ function getCourse_Enrollment($conn) {
     }
 
     echo json_encode($data);
-}
-
-function initDatabase($conn) {
-    $sql = file_get_contents('functions.sql');
-    if ($conn->multi_query($sql)) {
-        do {
-            if ($result = $conn->store_result()) {
-                $result->free();
-            }
-        } while ($conn->more_results() && $conn->next_result());
-    } else {
-        http_response_code(500);
-        echo json_encode(["error" => "Error initializing procedures: " . $conn->error]);
-    }
 }
 ?>
