@@ -90,12 +90,14 @@ const MarkAttendancePage = () => {
       <h1>Mark Attendance</h1>
 
       <label>Select Course: </label>
-      <select onChange={e => setSelectedCourse(e.target.value)} value={selectedCourse}>
-        <option value="">-- Select --</option>
-        {courses.map((course, index) => (
-         <option key={index} value={course.course}>{course.course}</option>
-        ))}
-      </select>
+    <select onChange={e => setSelectedCourse(e.target.value)} value={selectedCourse}>
+     <option value="">-- Select --</option>
+      {courses.map((course) => (
+        <option key={course.course_id} value={course.course_name}>
+          {course.course_name}
+        </option>
+      ))}
+    </select>
 
       {students.length > 0 && (
         <div>
