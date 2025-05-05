@@ -49,6 +49,13 @@ const MarkAttendancePage = () => {
     });
   }, [selectedCourse]);
 
+  const handleStatusChange = (studentName, status) => {
+  setAttendance(prev => ({
+    ...prev,
+    [studentName]: status
+  }));
+  };
+
   const handleSubmit = async () => {
     const today = new Date().toISOString().split('T')[0];
     const payload = students.map(name => ({
