@@ -85,7 +85,7 @@ const MarkAttendancePage = () => {
   };
 
   return (
-    <div className="attendance-system">
+    <div className="mark-attendance">
       <TeacherNavbar />
       <h1>Mark Attendance</h1>
 
