@@ -40,10 +40,10 @@ const Login = ({setUsername, role, setRole}) => {
         newErrors.server = 'Invalid username or password';
       } else {
       const result = await response.json();
-      setRole(result.data[0].role); 
-      userrole = result.data[0].role;
+      setRole(result.role); 
+      userrole = result.role;
       setUsername(formData.username);
-      console.log('Role:', result.data[0].role);
+      console.log('Role:', result.role);
       }
     }
     setErrors(newErrors);

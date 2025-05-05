@@ -59,6 +59,7 @@ INSERT INTO attendance (student, course, date, status) VALUES
 ('Bob Johnson', 'Math 101', '2025-04-28', 'present'),
 ('Bob Johnson', 'Math 101', '2025-04-29', 'present');
 
+DELIMITER //
 
 CREATE PROCEDURE get_attendance(IN course_name VARCHAR(100))
 BEGIN
@@ -66,7 +67,7 @@ BEGIN
     FROM attendance 
     WHERE course = course_name 
     ORDER BY student;
-END;
+END//
 
 CREATE PROCEDURE get_student_attendance(IN p_student_name VARCHAR(100))
 BEGIN
@@ -74,28 +75,28 @@ BEGIN
     FROM attendance 
     WHERE student = p_student_name 
     ORDER BY date;
-END;
+END//
 
 CREATE PROCEDURE get_students(IN course_name VARCHAR(100))
 BEGIN
     SELECT student 
     FROM course_enrollment 
     WHERE course = course_name;
-END;
+END//
 
 CREATE PROCEDURE get_studentcnt(IN course_name VARCHAR(100))
 BEGIN
     SELECT COUNT(*) 
     FROM course_enrollment 
     WHERE course = course_name;
-END;
+END//
 
 CREATE PROCEDURE get_attendancecnt(IN course_name VARCHAR(100))
 BEGIN
     SELECT COUNT(*) 
     FROM attendance 
     WHERE course = course_name AND status = 'present';
-END;
+END//
 
 CREATE PROCEDURE get_studentpercentage(IN p_course_name VARCHAR(100), IN p_name VARCHAR(100))
 BEGIN
@@ -103,26 +104,35 @@ BEGIN
     FROM attendance
     WHERE (course = p_course_name and student = p_name)
     GROUP BY status;
-END;
+END//
 
 CREATE PROCEDURE create_user(IN p_name VARCHAR(100), IN p_username VARCHAR(100), IN p_password VARCHAR(100), IN p_role VARCHAR(50))
 BEGIN
     INSERT INTO users (name, username, password, role) VALUES (p_name, p_username, p_password, p_role);
-END;
+END//
 
 CREATE PROCEDURE mark_attendance(IN p_name VARCHAR(100), IN p_course_name VARCHAR(100), IN p_date DATE, IN p_status VARCHAR(10))
 BEGIN
     INSERT INTO attendance(student, course, date, status) VALUES (p_name, p_course_name, p_date, p_status);
-END;
+END//
 
 CREATE PROCEDURE create_enrollment(IN p_name VARCHAR(100), IN p_course_name VARCHAR(100))
 BEGIN
-    INSERT INTO course_enrollment(student, course) VALUES (p_name, p_course_name)
-END;
+    INSERT INTO course_enrollment(student, course) VALUES (p_name, p_course_name);
+END//
 
 CREATE PROCEDURE get_password(IN p_username VARCHAR(100)) 
 BEGIN
     SELECT password
     FROM users
     WHERE username = p_username;
-END;
+END//
+
+CREATE PROCEDURE get_role(IN p_username VARCHAR(100)) 
+BEGIN
+    SELECT role
+    FROM users
+    WHERE username = p_username;
+END//
+
+DELIMITER ;

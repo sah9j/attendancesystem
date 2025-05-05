@@ -17,9 +17,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 
 $host = 'localhost';
 $port = 3306;
-// $db = 'school_management';
+$db = 'school_management';
 $user = 'root';
-$pass = '';
+$pass = 'S3h3693sAm258!';
 
 $conn = new mysqli($host, $user, $pass, null, $port);
 
@@ -28,6 +28,14 @@ if ($conn->connect_error) {
     echo json_encode(["error" => "Connection failed: " . $conn->connect_error]);
     exit;
 }
+
+$sql = "USE school_management";
+if ($conn->query($sql) !== TRUE) {
+    http_response_code(500);
+    echo json_encode(["error" => "Database selection failed: " . $conn->error]);
+    exit;
+}
+
 
 // Simple router using the REQUEST_URI
 $request = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
@@ -53,7 +61,14 @@ if ($request === '/api/ping' && $method === 'GET') {
     $hashword = $result->fetch_all(MYSQLI_ASSOC);
     $stmt->close();
     if (password_verify($data['password'], $hashword[0]['password'])) {
-        echo json_encode(["message" => "Login successful!", "data" => $hashword[0]]);
+        $sql = "CALL get_role(?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $data['username']);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $role = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+        echo json_encode(["message" => "Login successful!", "data" => $hashword[0], "role" => $role[0]['role']]);
     }
     else {
         echo json_encode(["error" => "Invalid username or password"]);
