@@ -47,7 +47,8 @@ if ($request === '/api/ping' && $method === 'GET') {
     echo json_encode(["message" => "React successfully called the PHP API!"]);
 } elseif ($request === '/api/login' && $method === 'POST') {
     $data = json_decode(file_get_contents('php://input'), true);
-    $sql = "CALL get_user(?, ?)";
+    //$sql = "CALL get_user(?, ?)";
+    $sql = "SELECT name, role FROM users WHERE username = ? AND password = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("ss", $data['username'], $data['password']);
     $stmt->execute();
@@ -123,18 +124,6 @@ if ($request === '/api/ping' && $method === 'GET') {
         "student_name" => $studentName
     ]);
 
-} elseif ($request === '/api/login' && $method === 'POST') {
-    $data = json_decode(file_get_contents('php://input'), true);
-    $sql = "CALL get_user(?, ?)";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ss", $data['username'], $data['password']);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $data = $result->fetch_all(MYSQLI_ASSOC);
-    $stmt->close();
-    echo json_encode(["message" => "Query successful!", "data" => $data]);
-
-
 } elseif ($request === '/api/studentpercentage' && $method === 'POST') {
     $data = json_decode(file_get_contents('php://input'), true);
     $sql = "CALL get_studentpercentage(?, ?)";
@@ -174,7 +163,7 @@ if ($request === '/api/ping' && $method === 'GET') {
     echo json_encode(["error" => "Not Found"]);
 }
 
-$conn->close();
+//$conn->close();
 
 
 
