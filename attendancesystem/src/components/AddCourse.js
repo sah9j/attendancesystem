@@ -5,6 +5,7 @@ import './AddCourse.css';
 function AddCourse() {
     const [courseName, setCourseName] = useState('');
     const [students, setStudents] = useState([]);
+    const [selectedStudents, setSelectedStudents] = useState([]);
 
     useEffect(() => {
         fetch('http://localhost:8000/api/students', {
@@ -18,6 +19,12 @@ function AddCourse() {
         .catch(error => console.error('Error fetching students:', error));
     }, []);
 
+    const handleSelectChange = (e) => {
+        const selectedOptions = Array.from(e.target.selectedOptions); // Get selected options
+        const selectedValues = selectedOptions.map(option => option.value); // Extract values
+        setSelectedStudents(selectedValues); // Update state
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log(students);
@@ -26,7 +33,7 @@ function AddCourse() {
             headers: {
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ course_name: courseName, students: students })
+            body: JSON.stringify({ course_name: courseName, students: selectedStudents })
           });
       
           if (!response.ok) {
@@ -53,9 +60,9 @@ function AddCourse() {
           </div>
           <div className="form-group">
             <label htmlFor="students">Select Students:</label>
-            <select id="students" multiple>
+            <select id="students" multiple onChange={handleSelectChange}>
               {students.map((student, index) => (
-                <option key={index} value={student.name}>
+                <option key={index} value={student.name} >
                   {student.name}
                 </option>
               ))}
