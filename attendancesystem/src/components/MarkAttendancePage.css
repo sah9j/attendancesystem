@@ -5,10 +5,14 @@
     color: navy;
     margin: 3rem;
   }
+  .mark-attendance h1{
+    color: navy;
+    margin: 2rem;
+  }
   .mark-attendance p{
     text-align: center;
   }
-  .mark-attendance td, .mark-attendance th{
+  .mark-attendance td, .mark-attendance th, .mark-attendance li{
     color: darkorange;
   }
   .mark-attendance label{
@@ -28,4 +32,11 @@
   .mark-attendance table{
     margin-left: auto;
     margin-right: auto;
+  }
+  .mark-attendance li {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 1.5rem;
+    font-family: comic sans ms;
   }
