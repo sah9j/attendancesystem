@@ -22,28 +22,11 @@
     display: block;
   }
   .add-course-form select {
-    display: block;
     margin-left: auto;
     margin-right: auto;
     font-size: 1.5rem;
     margin-top: 1.5rem;
     margin-bottom: 1.5rem;
-    font-family: comic sans ms;
-  }
-  .add-course-form ul {
-    margin-left: auto;
-    margin-right: auto;
-  }
-  .add-course-form table{
-    margin-left: auto;
-    margin-right: auto;
-  }
-  .add-course-form li {
-    display: block;
-    text-align: center;
-    margin-left: auto;
-    margin-right: auto;
-    font-size: 1.5rem;
     font-family: comic sans ms;
   }
 .add-course-form button{
