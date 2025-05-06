@@ -77,7 +77,7 @@ function AttendanceHistory({username}) {
     <div className="attendance-history">
       <TeacherNavbar />
       <div className="content">
-      <h2>Attendance History for {studentName}</h2>
+      <h1>Attendance History for {studentName}</h1>
         <form onSubmit={handleSubmit}>
           <datalist id="mylist">
           {names.map((sname, index) => (
