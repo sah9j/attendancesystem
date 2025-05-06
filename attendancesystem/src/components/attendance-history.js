@@ -14,7 +14,7 @@ function AttendanceHistory({username}) {
   useEffect(() => {
     async function fetchStudentNames() {
       try {
-        const response = await fetch('/api/students', {
+        const response = await fetch('http://localhost:8000/api/students', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -53,7 +53,7 @@ function AttendanceHistory({username}) {
     e.preventDefault();
     if (validateInput()) {
       try {
-        const response = await fetch('/api/studenthistory', {
+        const response = await fetch('http://localhost:8000/api/studenthistory', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
