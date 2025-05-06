@@ -14,56 +14,55 @@ const MarkAttendancePage = () => {
     fetch('http://localhost:8000/api/courses')
       .then(res => res.json())
       .then(data => setCourses(data))
-      .catch(err => {
-        setError("Could not load courses.");
-      });
+      .catch(() => setError("Could not load courses."));
   }, []);
 
-  // Fetch students
+  // Fetch students when a course is selected
   useEffect(() => {
     if (!selectedCourse) return;
 
-    fetch('http://localhost:8000/api/course_enrollment', {
+    fetch('http://localhost:8000/api/class_students', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ course_name: selectedCourse }),
     })
       .then(res => res.json())
       .then(data => {
-        if (Array.isArray(data)) {
-          setStudents(data);
+        const studentdata = data.data;
+        if (Array.isArray(studentdata)) {
+          setStudents(studentdata);
           const initialAttendance = {};
-          data.forEach(student => {
-            initialAttendance[student.username] = 'present';
+          studentdata.forEach(student => {
+            initialAttendance[student.student] = 'present';
           });
           setAttendance(initialAttendance);
         } else {
           setError("Failed to load students.");
         }
       })
-      .catch(err => {
-        setError("Failed to fetch students.");
-      });
+      .catch(() => setError("Failed to fetch students."));
   }, [selectedCourse]);
 
-  const handleStatusChange = (username, status) => {
+  // Handle dropdown changes
+  const handleStatusChange = (studentName, status) => {
     setAttendance(prev => ({
       ...prev,
-      [username]: status
+      [studentName]: status
     }));
   };
 
+  // Submit attendance
   const handleSubmit = async () => {
     const today = new Date().toISOString().split('T')[0];
     const payload = students.map(student => ({
-      username: student.username,
-      course: selectedCourse,
-      date: today,
-      status: attendance[student.username]
+    student_name: student.student,     
+    course: selectedCourse,
+    date: today,
+    status: attendance[student.student] || "absent"
     }));
-
+    
     try {
-      const response = await fetch('http://localhost:8000/api/attendance', {
+      const response = await fetch('http://localhost:8000/api/markattendance', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
@@ -97,12 +96,12 @@ const MarkAttendancePage = () => {
         <div>
           <h3>Students in {selectedCourse}</h3>
           <ul>
-            {students.map(student => (
-              <li key={student.username}>
-                {student.full_name || student.username}
+            {students.map((student, index) => (
+              <li key={student.student || index}>
+                {student.student}
                 <select
-                  value={attendance[student.username]}
-                  onChange={e => handleStatusChange(student.username, e.target.value)}
+                  value={attendance[student.student]}
+                  onChange={e => handleStatusChange(student.student, e.target.value)}
                   style={{ marginLeft: '10px' }}
                 >
                   <option value="present">Present</option>

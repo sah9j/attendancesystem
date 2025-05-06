@@ -183,16 +183,24 @@ if ($request === '/api/ping' && $method === 'GET') {
 
 } elseif ($request === '/api/markattendance' && $method === 'POST') {
     $data = json_decode(file_get_contents('php://input'), true);
-    $sql = "CALL mark_attendance(?, ?, ?, ?)";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssss", $data['student_name'],
-    $data['course'], $data['date'], $data['status']);
-    $stmt->execute();
-    $result = $stmt->get_result();
 
+    foreach ($data as $record) {
+        $student_name = $record['student_name'];
+        $course = $record['course'];
+        $date = $record['date'];
+        $status = $record['status'];
+
+        $sql = "CALL mark_attendance(?, ?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+        
+        $stmt->bind_param("ssss", $student_name, $course, $date, $status);
+
+        $stmt->execute();
+    }
+
+    // Close the statement and return a success message
     $stmt->close();
     echo json_encode(["message" => "Attendance successful!"]);
-
 
 } elseif ($request === '/api/report' && $method === 'POST'){
     $data = json_decode(file_get_contents('php://input'), true);
@@ -204,6 +212,19 @@ if ($request === '/api/ping' && $method === 'GET') {
     $data = $result->fetch_all(MYSQLI_ASSOC);
     $stmt->close();
     echo json_encode(["message" => "Query successful!", "data" => $data]);
+
+} elseif ($request === '/api/class_students' && $method === 'POST'){
+    $data = json_decode(file_get_contents('php://input'), true);
+    $sql = "CALL get_students(?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $data['course_name']);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $data = $result->fetch_all(MYSQLI_ASSOC);
+    $stmt->close();
+    echo json_encode(["message" => "Query successful!", "data" => $data]);
+
+
 } else {
     http_response_code(404);
     echo json_encode(["error" => "Not Found"]);
