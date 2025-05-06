@@ -121,6 +121,11 @@ BEGIN
     INSERT INTO course_enrollment(student, course) VALUES (p_name, p_course_name);
 END//
 
+CREATE PROCEDURE create_course(IN course_name VARCHAR(100))
+BEGIN
+    INSERT INTO courses(name) VALUES (course_name);
+END//
+
 CREATE PROCEDURE get_password(IN p_username VARCHAR(100)) 
 BEGIN
     SELECT password

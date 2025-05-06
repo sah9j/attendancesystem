@@ -11,6 +11,9 @@ function TeacherNavbar() {
           <Link to="/generate-report">Generate Report</Link>
         </li>
         <li>
+          <Link to="/add-course">Create Course</Link>
+        </li>
+        <li>
           <Link to="/mark-attendance">Mark Attendance</Link>
         </li>
         <li>

@@ -110,7 +110,25 @@ if ($request === '/api/ping' && $method === 'GET') {
     $stmt->close();
     echo json_encode($data);
 
-} elseif ($request === '/api/users' && $method === 'GET') {
+} elseif ($request === '/api/addcourse' && $method === 'POST') {
+    $data = json_decode(file_get_contents('php://input'), true);
+    $sql = "CALL create_course(?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $data['course_name']);
+    $stmt->execute();
+    $stmt->close();
+
+    foreach ($data['students'] as $student) {
+        $sql = "CALL create_enrollment(?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ss", $student['name'], $data['course_name']);
+        $stmt->execute();
+        $stmt->close();
+    }
+    echo json_encode(["message" => "Course Registration Successful"]);
+}
+
+elseif ($request === '/api/users' && $method === 'GET') {
     getUsers($conn);
 
 } elseif ($request === '/api/courses' && $method === 'GET') {

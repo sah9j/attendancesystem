@@ -10,6 +10,7 @@ import ViewAttendancePercentage from './components/view-attendance-percentage';
 import ReportPage from './components/generalReport';
 import MarkAttendancePage from './components/MarkAttendancePage';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import AddCourse from './components/AddCourse';
 
 function App() {
 
@@ -29,6 +30,7 @@ function App() {
         <Route path="/generate-report" element={<ReportPage />} />
         <Route path="/register" element={<Register />} />
         <Route path="/mark-attendance" element={<MarkAttendancePage/>}/>
+        <Route path="/add-course" element={<AddCourse/>} />
       </Routes>
     </Router>
   );
