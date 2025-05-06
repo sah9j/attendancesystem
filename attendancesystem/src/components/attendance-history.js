@@ -90,7 +90,7 @@ function AttendanceHistory({username}) {
         </form>
         {(enable === 1) &&
           <div>
-            <table>
+            <table border="1" cellPadding="8" cellSpacing="0">
               <thead>
                 <tr>
                   <th>Course</th>
