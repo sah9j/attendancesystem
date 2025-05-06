@@ -1,0 +1,64 @@
+.add-course-form {
+    background-color: lightcyan;
+  }
+  .add-course-form h1{
+    color: navy;
+    margin: 3rem;
+  }
+  .add-course-form h3{
+    color: navy;
+    margin: 3rem;
+    font-size: 3rem;
+  }
+  .add-course-form p{
+    text-align: center;
+  }
+  .add-course-form td, .add-course-form th, .add-course-form li{
+    color: darkorange;
+  }
+  .add-course-form label{
+    color: darkorange;
+    text-align: center;
+    display: block;
+  }
+  .add-course-form select {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 1.5rem;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    font-family: comic sans ms;
+  }
+  .add-course-form ul {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .add-course-form table{
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .add-course-form li {
+    display: block;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 1.5rem;
+    font-family: comic sans ms;
+  }
+.add-course-form button{
+    text-align: center;
+    font-size: 2rem;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 1rem;
+    display: block;
+    font-family: comic sans ms;
+    margin-top: 1.5rem;
+    background-color: blue;
+    color: yellow;
+}
+.add-course-form button:hover{
+    background-color: navy;
+    color: lightcoral;
+}
