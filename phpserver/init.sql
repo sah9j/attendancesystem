@@ -135,4 +135,11 @@ BEGIN
     WHERE username = p_username;
 END//
 
+CREATE PROCEDURE get_all_students() 
+BEGIN
+    SELECT name
+    FROM users
+    WHERE role = 'user';
+END//
+
 DELIMITER ;

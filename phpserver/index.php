@@ -111,6 +111,15 @@ if ($request === '/api/ping' && $method === 'GET') {
 } elseif ($request === '/api/attendance' && $method === 'GET') {
     getAttendance($conn);
 
+} elseif ($request === '/api/students' && $method === 'POST') {
+    $sql = "CALL get_all_students()";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $data = $result->fetch_all(MYSQLI_ASSOC);
+    $stmt->close();
+    echo json_encode($data);
+
 } elseif ($request === '/api/users' && $method === 'GET') {
     getUsers($conn);
 
@@ -148,6 +157,20 @@ if ($request === '/api/ping' && $method === 'GET') {
         "student_name" => $studentName
     ]);
 
+} elseif ($request === '/api/studenthistory' && $method === 'POST') { 
+    // Get name associated with the username
+    $data = json_decode(file_get_contents('php://input'), true);
+    $sql = "CALL get_student_attendance(?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $data['studentName']);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $userData = $result->fetch_all(MYSQLI_ASSOC);
+    $stmt->close();
+    echo json_encode([
+        "message" => "Query successful!", 
+        "data" => $userData
+    ]);
 } elseif ($request === '/api/studentpercentage' && $method === 'POST') {
     $data = json_decode(file_get_contents('php://input'), true);
     $sql = "CALL get_studentpercentage(?, ?)";
