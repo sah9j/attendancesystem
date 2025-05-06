@@ -107,7 +107,6 @@ if ($request === '/api/ping' && $method === 'GET') {
     } 
 
 
-
 } elseif ($request === '/api/attendance' && $method === 'GET') {
     getAttendance($conn);
 
