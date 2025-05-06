@@ -7,80 +7,76 @@ const MarkAttendancePage = () => {
   const [selectedCourse, setSelectedCourse] = useState('');
   const [students, setStudents] = useState([]);
   const [attendance, setAttendance] = useState({});
+  const [error, setError] = useState(null);
 
-  //Fetch courses
+  // Fetch courses
   useEffect(() => {
-    fetch('http://localhost/your-api-endpoint/getCourses.php')
-      .then(response => response.json())
-      .then(data => {
-        console.log('Courses fetched:', data);
-        setCourses(Array.isArray(data) ? data : []);
-      })
-      .catch(error => {
-        console.error('Error fetching courses:', error);
-        setCourses([]);
+    fetch('/api/courses')
+      .then(res => res.json())
+      .then(data => setCourses(data))
+      .catch(err => {
+        console.error("Failed to fetch courses:", err);
+        setError("Could not load courses.");
       });
   }, []);
 
-  //Fetch students for selected course
+  // Fetch students
   useEffect(() => {
-  if (!selectedCourse) return;
+    if (!selectedCourse) return;
 
-  fetch('http://localhost/your-api-endpoint/getEnrolledStudents.php', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ course: selectedCourse })
-  })
-    .then(res => res.json())
-    .then(data => {
-      console.log('Students fetched:', data);
-      const studentNames = data.map(item => item.name); // Adjust based on response
-      setStudents(studentNames);
-
-      const defaultStatus = {};
-      studentNames.forEach(name => defaultStatus[name] = 'Present');
-      setAttendance(defaultStatus);
+    fetch('/api/getStudentsForCourse.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ course_name: selectedCourse }),
     })
-    .catch(err => {
-      console.error('Error fetching students:', err);
-      setStudents([]);
-    });
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) {
+          setStudents(data);
+          const initialAttendance = {};
+          data.forEach(student => {
+            initialAttendance[student.username] = 'present';
+          });
+          setAttendance(initialAttendance);
+        } else {
+          console.error("Unexpected response format:", data);
+          setError("Failed to load students.");
+        }
+      })
+      .catch(err => {
+        console.error("Error fetching students:", err);
+        setError("Failed to fetch students.");
+      });
   }, [selectedCourse]);
 
-  const handleStatusChange = (studentName, status) => {
-  setAttendance(prev => ({
-    ...prev,
-    [studentName]: status
-  }));
+  const handleStatusChange = (username, status) => {
+    setAttendance(prev => ({
+      ...prev,
+      [username]: status
+    }));
   };
 
   const handleSubmit = async () => {
     const today = new Date().toISOString().split('T')[0];
-    const payload = students.map(name => ({
-      username: name,
+    const payload = students.map(student => ({
+      username: student.username,
       course: selectedCourse,
-      attendance: attendance[name],
-      date: today
+      date: today,
+      status: attendance[student.username]
     }));
 
     try {
-      const response = await fetch('http://localhost:8000/api/attendance', {
+      const response = await fetch('/api/submitAttendance.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`HTTP error! ${response.status}: ${errorText}`);
-      }
-
-      alert('Attendance submitted successfully!');
+      if (!response.ok) throw new Error(`HTTP error ${response.status}`);
+      alert("Attendance submitted successfully.");
     } catch (err) {
-      console.error('Error submitting attendance:', err);
-      alert('Failed to submit attendance.');
+      console.error("Error submitting attendance:", err);
+      alert("Failed to submit attendance.");
     }
   };
 
@@ -90,29 +86,31 @@ const MarkAttendancePage = () => {
       <h1>Mark Attendance</h1>
 
       <label>Select Course: </label>
-    <select onChange={e => setSelectedCourse(e.target.value)} value={selectedCourse}>
-     <option value="">-- Select --</option>
-      {courses.map((course) => (
-        <option key={course.course_id} value={course.course_name}>
-          {course.course_name}
-        </option>
-      ))}
-    </select>
+      <select value={selectedCourse} onChange={e => setSelectedCourse(e.target.value)}>
+        <option value="">-- Select a course --</option>
+        {courses.map((course, index) => (
+          <option key={index} value={course.name}>
+            {course.name}
+          </option>
+        ))}
+      </select>
+
+      {error && <p style={{ color: 'red' }}>{error}</p>}
 
       {students.length > 0 && (
         <div>
           <h3>Students in {selectedCourse}</h3>
           <ul>
-            {students.map(name => (
-              <li key={name}>
-                {name}
+            {students.map(student => (
+              <li key={student.username}>
+                {student.full_name || student.username}
                 <select
-                  value={attendance[name]}
-                  onChange={e => handleStatusChange(name, e.target.value)}
+                  value={attendance[student.username]}
+                  onChange={e => handleStatusChange(student.username, e.target.value)}
                   style={{ marginLeft: '10px' }}
                 >
-                  <option value="Present">Present</option>
-                  <option value="Absent">Absent</option>
+                  <option value="present">Present</option>
+                  <option value="absent">Absent</option>
                 </select>
               </li>
             ))}
