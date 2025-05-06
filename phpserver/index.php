@@ -121,7 +121,7 @@ if ($request === '/api/ping' && $method === 'GET') {
     foreach ($data['students'] as $student) {
         $sql = "CALL create_enrollment(?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("ss", $student['name'], $data['course_name']);
+        $stmt->bind_param("ss", $student, $data['course_name']);
         $stmt->execute();
         $stmt->close();
     }
