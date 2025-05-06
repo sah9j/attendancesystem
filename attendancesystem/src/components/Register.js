@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Register.css';
 import { useNavigate } from 'react-router-dom';
 
@@ -23,7 +23,17 @@ const Register = () => {
     courses: []
   });
   const [errors, setErrors] = useState({});
+  const [courses, setCourses] = useState([]);
   const [registerError, setRegisterError] = useState('');
+
+  useEffect(() => {
+      fetch('http://localhost:8000/api/courses')
+        .then(res => res.json())
+        .then(data => {
+          const courseNames = data.map((course) => course.name);
+          setCourses(courseNames)
+        }).catch((error) => console.error('Error fetching courses:', error));
+      }, []);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -163,7 +173,7 @@ const Register = () => {
           <div className="form-group">
             <label>Courses</label>
             <div className="courses-list">
-              {coursesList.map((course) => (
+              {courses.map((course) => (
                 <div key={course} className="course-item">
                   <input
                     type="checkbox"

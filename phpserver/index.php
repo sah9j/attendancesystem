@@ -81,27 +81,18 @@ if ($request === '/api/ping' && $method === 'GET') {
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("ssss", $student_name, 
     $data['username'], $hash, $data['role']);
-
-    if ($stmt->execute()) {
-        echo json_encode(["message" => "Registration Successful"]);
-    } else {
-        http_response_code(500);
-        echo json_encode(["error" => "Registration failed"]);
-    }
+    $stmt->execute();
     $stmt->close();
 
-
     if ($data['role'] === 'user') {
-        $sql = "CALL create_enrollment(?, ?)";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("ss", $student_name, $data['course_name']);
-        if ($stmt->execute()) {
+        foreach ($data['courses'] as $course) {
+            $sql = "CALL create_enrollment(?, ?)";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("ss", $student_name, $course);
+            $stmt->execute();
+            $stmt->close();
+        }
         echo json_encode(["message" => "Registration Successful"]);
-    } else {
-        http_response_code(500);
-        echo json_encode(["error" => "Registration failed"]);
-    }
-        $stmt->close();
     } else if ($data['role'] === 'teacher') {
         $role = 'admin';
     } 
