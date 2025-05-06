@@ -5,10 +5,15 @@
     color: navy;
     margin: 3rem;
   }
+  .mark-attendance h3{
+    color: navy;
+    margin: 3rem;
+    font-size: 3rem;
+  }
   .mark-attendance p{
     text-align: center;
   }
-  .mark-attendance td, .mark-attendance th{
+  .mark-attendance td, .mark-attendance th, .mark-attendance li{
     color: darkorange;
   }
   .mark-attendance label{
@@ -25,7 +30,35 @@
     margin-bottom: 1.5rem;
     font-family: comic sans ms;
   }
+  .mark-attendance ul {
+    margin-left: auto;
+    margin-right: auto;
+  }
   .mark-attendance table{
     margin-left: auto;
     margin-right: auto;
   }
+  .mark-attendance li {
+    display: block;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 1.5rem;
+    font-family: comic sans ms;
+  }
+.mark-attendance button{
+    text-align: center;
+    font-size: 2rem;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 1rem;
+    display: block;
+    font-family: comic sans ms;
+    margin-top: 1.5rem;
+    background-color: blue;
+    color: yellow;
+}
+.mark-attendance button:hover{
+    background-color: navy;
+    color: lightcoral;
+}
