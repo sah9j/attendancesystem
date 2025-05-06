@@ -35,5 +35,5 @@
 }
 .attendance-history button:hover{
     background-color: navy;
-    background-color: lightcoral;
+    color: lightcoral;
 }
