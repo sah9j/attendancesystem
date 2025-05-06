@@ -44,7 +44,7 @@ function AddCourse() {
         };
     }
   return (
-    <div className="teacher-home">
+    <div className="add-course-form">
       <TeacherNavbar />
       <div className="content">
         <h1>Add Course</h1>
