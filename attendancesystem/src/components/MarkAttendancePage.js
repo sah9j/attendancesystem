@@ -102,7 +102,6 @@ const MarkAttendancePage = () => {
                 <select
                   value={attendance[student.student]}
                   onChange={e => handleStatusChange(student.student, e.target.value)}
-                  style={{ marginLeft: '10px' }}
                 >
                   <option value="present">Present</option>
                   <option value="absent">Absent</option>
