@@ -14,7 +14,7 @@ function AttendanceHistory({username}) {
   useEffect(() => {
     async function fetchStudentNames() {
       try {
-        const response = await fetch('/api/students', {
+        const response = await fetch('http://localhost:8000/api/students', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -53,7 +53,7 @@ function AttendanceHistory({username}) {
     e.preventDefault();
     if (validateInput()) {
       try {
-        const response = await fetch('/api/studenthistory', {
+        const response = await fetch('http://localhost:8000/api/studenthistory', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -77,7 +77,7 @@ function AttendanceHistory({username}) {
     <div className="attendance-history">
       <TeacherNavbar />
       <div className="content">
-      <h2>Attendance History for {studentName}</h2>
+      <h1>Attendance History for {studentName}</h1>
         <form onSubmit={handleSubmit}>
           <datalist id="mylist">
           {names.map((sname, index) => (
@@ -90,7 +90,7 @@ function AttendanceHistory({username}) {
         </form>
         {(enable === 1) &&
           <div>
-            <table>
+            <table border="1" cellPadding="8" cellSpacing="0">
               <thead>
                 <tr>
                   <th>Course</th>

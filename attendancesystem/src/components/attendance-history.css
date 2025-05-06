@@ -15,3 +15,26 @@
 .attendance-history table{
     margin-bottom: 3rem;
 }
+.attendance-history input{
+    text-align: center;
+    font-size: 2rem;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+.attendance-history button{
+    text-align: center;
+    font-size: 2rem;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 1rem;
+    display: block;
+    font-family: comic sans ms;
+    margin-top: 1.5rem;
+    background-color: blue;
+    color: yellow;
+}
+.attendance-history button:hover{
+    background-color: navy;
+    color: lightcoral;
+}
