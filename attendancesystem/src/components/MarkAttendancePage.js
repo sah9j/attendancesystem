@@ -11,11 +11,10 @@ const MarkAttendancePage = () => {
 
   // Fetch courses
   useEffect(() => {
-    fetch('/api/courses')
+    fetch('http://localhost:8000/api/courses')
       .then(res => res.json())
       .then(data => setCourses(data))
       .catch(err => {
-        console.error("Failed to fetch courses:", err);
         setError("Could not load courses.");
       });
   }, []);
@@ -24,7 +23,7 @@ const MarkAttendancePage = () => {
   useEffect(() => {
     if (!selectedCourse) return;
 
-    fetch('/api/getStudentsForCourse.php', {
+    fetch('http://localhost:8000/api/course_enrollment', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ course_name: selectedCourse }),
@@ -39,12 +38,10 @@ const MarkAttendancePage = () => {
           });
           setAttendance(initialAttendance);
         } else {
-          console.error("Unexpected response format:", data);
           setError("Failed to load students.");
         }
       })
       .catch(err => {
-        console.error("Error fetching students:", err);
         setError("Failed to fetch students.");
       });
   }, [selectedCourse]);
@@ -66,7 +63,7 @@ const MarkAttendancePage = () => {
     }));
 
     try {
-      const response = await fetch('/api/submitAttendance.php', {
+      const response = await fetch('http://localhost:8000/api/attendance', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
@@ -75,7 +72,6 @@ const MarkAttendancePage = () => {
       if (!response.ok) throw new Error(`HTTP error ${response.status}`);
       alert("Attendance submitted successfully.");
     } catch (err) {
-      console.error("Error submitting attendance:", err);
       alert("Failed to submit attendance.");
     }
   };
