@@ -24,7 +24,7 @@
     margin-bottom: 1.5rem;
     font-family: comic sans ms;
     text-align: center;
-    size: 2rem;
+    width: 1rem;
   }
   .add-course-form select {
     margin-left: auto;
@@ -34,6 +34,7 @@
     margin-bottom: 1.5rem;
     font-family: comic sans ms;
     text-align: center;
+    width: 1rem;
   }
 .add-course-form button{
     text-align: center;
