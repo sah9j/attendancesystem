@@ -10,7 +10,7 @@ function ReportPage() {
 
   // Fetch all courses to populate dropdown
   useEffect(() => {
-    fetch('/api/courses')
+    fetch('http://localhost:8000/api/courses')
       .then((res) => res.json())
       .then((data) => setCourses(data))
       .catch((err) => setError("Failed to load courses"));
@@ -21,7 +21,7 @@ function ReportPage() {
   async function fetchReport(course) {
     try {
       setSelectedCourse(course);
-      const response = await fetch('/api/report', {
+      const response = await fetch('http://localhost:8000/api/report', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
