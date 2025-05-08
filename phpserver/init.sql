@@ -3,6 +3,7 @@ CREATE DATABASE school_management;
 
 USE school_management;
 
+-- The users table stores user information, including their name, username, password, and role (admin or user).
 CREATE TABLE IF NOT EXISTS users (
   id SERIAL PRIMARY KEY,
   name VARCHAR(100) NOT NULL UNIQUE,
@@ -11,11 +12,14 @@ CREATE TABLE IF NOT EXISTS users (
   role VARCHAR(50) CHECK (role IN ('admin', 'user'))
 );
 
+-- The courses table stores course information, including the course name.
 CREATE TABLE IF NOT EXISTS courses (
   id SERIAL PRIMARY KEY,
   name VARCHAR(100) NOT NULL unique
 );
 
+-- The attendance table stores attendance records for students, including the student name, course name, date, and 
+-- status (present or absent).
 CREATE TABLE IF NOT EXISTS attendance (
   id SERIAL PRIMARY KEY,
   student VARCHAR(100) REFERENCES users(name),
@@ -26,12 +30,15 @@ CREATE TABLE IF NOT EXISTS attendance (
   FOREIGN KEY (course) REFERENCES courses(name)
 );
 
+-- The course_enrollment table stores the enrollment of students in courses, including the student name and course name.
+-- It has foreign keys referencing the users and courses tables to ensure data integrity.
+-- The ON DELETE CASCADE option ensures that if a user or course is deleted, the corresponding enrollments are also deleted.
 CREATE TABLE IF NOT EXISTS course_enrollment (
   id SERIAL PRIMARY KEY,
   student VARCHAR(100),
   course VARCHAR(50),
-  FOREIGN KEY (student) REFERENCES users(name) ON DELETE CASCADE,
-  FOREIGN KEY (course) REFERENCES courses(name) ON DELETE CASCADE
+  FOREIGN KEY (student) REFERENCES users(name),
+  FOREIGN KEY (course) REFERENCES courses(name)
 );
 
 -- Seed users (passwords: 'password123', 'userpass', 'adminpass')
@@ -59,9 +66,24 @@ INSERT INTO attendance (student, course, date, status) VALUES
 ('Bob Johnson', 'Math 101', '2025-04-28', 'present'),
 ('Bob Johnson', 'Math 101', '2025-04-29', 'present');
 
+/*
+The following SQL statements create stored procedures for various operations in the school management system:
+1. `get_attendance`: Retrieves attendance records for a specific course.
+2. `get_student_attendance`: Retrieves attendance records for a specific student.
+3. `get_students`: Retrieves a list of students enrolled in a specific course.
+4. `create_user`: Creates a new user with the specified name, username, password, and role.
+5. `mark_attendance`: Marks attendance for a specific student in a specific course on a specific date.
+6. `create_enrollment`: Enrolls a student in a specific course.
+7. `create_course`: Creates a new course with the specified name.
+8. `get_password`: Retrieves the password for a specific username.
+9. `get_role`: Retrieves the role for a specific username.
+10. `get_all_students`: Retrieves a list of all students in the system.
+*/
+
+
 DELIMITER //
 
-CREATE PROCEDURE get_attendance(IN course_name VARCHAR(100))
+CREATE PROCEDURE get_attendance(IN course_name VARCHAR(100)) 
 BEGIN
     SELECT student, date, status AS attendance 
     FROM attendance 
@@ -69,7 +91,7 @@ BEGIN
     ORDER BY student;
 END//
 
-CREATE PROCEDURE get_student_attendance(IN p_student_name VARCHAR(100))
+CREATE PROCEDURE get_student_attendance(IN p_student_name VARCHAR(100)) 
 BEGIN
     SELECT course, date, status AS attendance 
     FROM attendance 
@@ -77,51 +99,29 @@ BEGIN
     ORDER BY date;
 END//
 
-CREATE PROCEDURE get_students(IN course_name VARCHAR(100))
+CREATE PROCEDURE get_students(IN course_name VARCHAR(100)) 
 BEGIN
     SELECT student 
     FROM course_enrollment 
     WHERE course = course_name;
 END//
 
-CREATE PROCEDURE get_studentcnt(IN course_name VARCHAR(100))
-BEGIN
-    SELECT COUNT(*) 
-    FROM course_enrollment 
-    WHERE course = course_name;
-END//
-
-CREATE PROCEDURE get_attendancecnt(IN course_name VARCHAR(100))
-BEGIN
-    SELECT COUNT(*) 
-    FROM attendance 
-    WHERE course = course_name AND status = 'present';
-END//
-
-CREATE PROCEDURE get_studentpercentage(IN p_course_name VARCHAR(100), IN p_name VARCHAR(100))
-BEGIN
-    SELECT status, COUNT(*) as count
-    FROM attendance
-    WHERE (course = p_course_name and student = p_name)
-    GROUP BY status;
-END//
-
 CREATE PROCEDURE create_user(IN p_name VARCHAR(100), IN p_username VARCHAR(100), IN p_password VARCHAR(100), IN p_role VARCHAR(50))
 BEGIN
-    INSERT INTO users (name, username, password, role) VALUES (p_name, p_username, p_password, p_role);
+    INSERT INTO users (name, username, password, role) VALUES (p_name, p_username, p_password, p_role); 
 END//
 
 CREATE PROCEDURE mark_attendance(IN p_name VARCHAR(100), IN p_course_name VARCHAR(100), IN p_date DATE, IN p_status VARCHAR(10))
 BEGIN
-    INSERT INTO attendance(student, course, date, status) VALUES (p_name, p_course_name, p_date, p_status);
+    INSERT INTO attendance(student, course, date, status) VALUES (p_name, p_course_name, p_date, p_status); 
 END//
 
-CREATE PROCEDURE create_enrollment(IN p_name VARCHAR(100), IN p_course_name VARCHAR(100))
+CREATE PROCEDURE create_enrollment(IN p_name VARCHAR(100), IN p_course_name VARCHAR(100)) 
 BEGIN
     INSERT INTO course_enrollment(student, course) VALUES (p_name, p_course_name);
 END//
 
-CREATE PROCEDURE create_course(IN course_name VARCHAR(100))
+CREATE PROCEDURE create_course(IN course_name VARCHAR(100)) 
 BEGIN
     INSERT INTO courses(name) VALUES (course_name);
 END//

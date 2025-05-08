@@ -57,7 +57,6 @@ const Login = ({setUsername, role, setRole}) => {
     const { isValid, userrole } = await validateForm();
     console.log('User Role:', userrole);
     if (isValid) {
-      // TODO: Implement login logic here
       console.log('Login form submitted:', formData);
       // Redirect based on role
       if (userrole === 'user') {

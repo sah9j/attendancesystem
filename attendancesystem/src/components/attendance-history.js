@@ -3,7 +3,6 @@ import TeacherNavbar from './TeacherNavbar';
 import './attendance-history.css';
 
 function AttendanceHistory({username}) {
-  //const [name, setName] = useState('Alice Smith');
   const [studentName, setStudentName] = useState('');
   const [names, setNames] = useState([]);
   const [history, setHistory] = useState([]);
@@ -67,7 +66,6 @@ function AttendanceHistory({username}) {
         setEnable(1);
         setLoading(false);
       } catch (error) {
-        //setRegisterError('An error occurred during registration');
         console.error('error in getting attendance:', error);
       }
     }

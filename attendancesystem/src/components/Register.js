@@ -2,15 +2,6 @@ import React, { useState, useEffect } from 'react';
 import './Register.css';
 import { useNavigate } from 'react-router-dom';
 
-const coursesList = [
-  'Math',
-  'Science',
-  'History',
-  'English',
-  'Art',
-  'Computer Science'
-];
-
 const Register = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -26,6 +17,7 @@ const Register = () => {
   const [courses, setCourses] = useState([]);
   const [registerError, setRegisterError] = useState('');
 
+  // Fetch courses from the API
   useEffect(() => {
       fetch('http://localhost:8000/api/courses')
         .then(res => res.json())
@@ -35,6 +27,7 @@ const Register = () => {
         }).catch((error) => console.error('Error fetching courses:', error));
       }, []);
 
+  // ensure that formData is updated correctly
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     if (type === 'checkbox') {
@@ -49,6 +42,7 @@ const Register = () => {
     }
   };
 
+  // Validate form data
   const validateForm = () => {
     const newErrors = {};
     if (!formData.firstName) newErrors.firstName = 'First name is required';
@@ -62,8 +56,10 @@ const Register = () => {
     return Object.keys(newErrors).length === 0;
   };
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // If form is valid, then create a new user and send to login page.
     if (validateForm()) {
       try {
         const response = await fetch('http://localhost:8000/api/register', {
