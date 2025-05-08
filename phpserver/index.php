@@ -92,10 +92,8 @@ if ($request === '/api/ping' && $method === 'GET') {
             $stmt->execute();
             $stmt->close();
         }
-        echo json_encode(["message" => "Registration Successful"]);
-    } else if ($data['role'] === 'teacher') {
-        $role = 'admin';
     } 
+    echo json_encode(["message" => "Registration Successful"]);
 
 
 } elseif ($request === '/api/attendance' && $method === 'GET') {
