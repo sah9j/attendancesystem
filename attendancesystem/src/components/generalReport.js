@@ -17,7 +17,6 @@ function ReportPage() {
   }, []);
 
   // Fetch report when selectedCourse changes
-
   async function fetchReport(course) {
     try {
       setSelectedCourse(course);
@@ -41,6 +40,7 @@ function ReportPage() {
       <TeacherNavbar />
       <h1>Attendance Report</h1>
 
+      {/* This html section allows the user to select a valid course to see the attendance report. */}
       <label>Select Course: </label>
       <select onChange={(e) => fetchReport(e.target.value)} value={selectedCourse}>
         <option value="">-- Select a course --</option>
@@ -53,6 +53,7 @@ function ReportPage() {
 
       {error && <p style={{ color: 'red' }}>{error}</p>}
 
+      {/* This html section displays the actual report. */}
       <table border="1" cellPadding="8" cellSpacing="0">
         <thead>
           <tr>

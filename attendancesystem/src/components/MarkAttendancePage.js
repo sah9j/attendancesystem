@@ -80,6 +80,7 @@ const MarkAttendancePage = () => {
       <TeacherNavbar />
       <h1>Mark Attendance</h1>
 
+      {/* This html section allows the user to choose a valid course to mark attendance. */}
       <label>Select Course: </label>
       <select value={selectedCourse} onChange={e => setSelectedCourse(e.target.value)}>
         <option value="">-- Select a course --</option>
@@ -92,6 +93,7 @@ const MarkAttendancePage = () => {
 
       {error && <p style={{ color: 'red' }}>{error}</p>}
 
+      {/* This html section allows the user to select which students are present or absent. */}
       {students.length > 0 && (
         <div>
           <h3>Students in {selectedCourse}</h3>

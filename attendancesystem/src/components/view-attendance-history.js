@@ -9,6 +9,7 @@ function ViewAttendanceHistory({username}) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Fetches the attendance history for the student when the component mounts.
   useEffect(() => {
     async function fetchAttendance() {
       try {
@@ -60,6 +61,8 @@ function ViewAttendanceHistory({username}) {
       <div className="content">
         <h1>Attendance History for {studentName || username}</h1>
         
+        {/* This code section will display different text based on if the data is loading, there's an error, or if the data
+        was successfully loaded. */}
         {loading ? (
           <p>Loading attendance data...</p>
         ) : error ? (

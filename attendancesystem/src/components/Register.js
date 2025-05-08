@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
   const navigate = useNavigate();
+  // stores all of the information gathered from the form.
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -91,6 +92,7 @@ const Register = () => {
         <h2>Register</h2>
         {registerError && <div className="error-message">{registerError}</div>}
         <form onSubmit={handleSubmit}>
+          {/* This div handles the first name part of the form. */}
           <div className="form-group">
             <label htmlFor="firstName">First Name</label>
             <input
@@ -103,6 +105,7 @@ const Register = () => {
             />
             {errors.firstName && <span className="error-message">{errors.firstName}</span>}
           </div>
+          {/* This div handles the last name part of the form. */}
           <div className="form-group">
             <label htmlFor="lastName">Last Name</label>
             <input
@@ -115,6 +118,7 @@ const Register = () => {
             />
             {errors.lastName && <span className="error-message">{errors.lastName}</span>}
           </div>
+          {/* This div handles the username part of the form. */}
           <div className="form-group">
             <label htmlFor="username">Username</label>
             <input
@@ -127,6 +131,7 @@ const Register = () => {
             />
             {errors.username && <span className="error-message">{errors.username}</span>}
           </div>
+          {/* This div handles the password part of the form. */}
           <div className="form-group">
             <label htmlFor="password">Password</label>
             <input
@@ -139,6 +144,7 @@ const Register = () => {
             />
             {errors.password && <span className="error-message">{errors.password}</span>}
           </div>
+          {/* This div handles the confirm password part of the form. */}
           <div className="form-group">
             <label htmlFor="confirmPassword">Confirm Password</label>
             <input
@@ -151,6 +157,7 @@ const Register = () => {
             />
             {errors.confirmPassword && <span className="error-message">{errors.confirmPassword}</span>}
           </div>
+          {/* This div handles the role part of the form. */}
           <div className="form-group">
             <label htmlFor="role">Role</label>
             <select
@@ -166,6 +173,7 @@ const Register = () => {
             </select>
             {errors.role && <span className="error-message">{errors.role}</span>}
           </div>
+          {/* This div handles the courses part of the form. */}
           <div className="form-group">
             <label>Courses</label>
             <div className="courses-list">
@@ -185,6 +193,7 @@ const Register = () => {
             </div>
             {errors.courses && <span className="error-message">{errors.courses}</span>}
           </div>
+          {/* This is the register button. */}
           <button type="submit" className="register-button">Register</button>
           <div className="login-link">
             <p>Already have an account? <a href="/">Login Here</a></p>

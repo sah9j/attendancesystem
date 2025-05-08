@@ -10,6 +10,7 @@ function AttendanceHistory({username}) {
   const [error, setError] = useState(null);
   const [enable, setEnable] = useState(0);
 
+  // Fetches the student names from the API when the component mounts.
   useEffect(() => {
     async function fetchStudentNames() {
       try {
@@ -39,6 +40,7 @@ function AttendanceHistory({username}) {
     fetchStudentNames();
   }, []);
 
+  // Validates the input to ensure a valid student name is selected.
   const validateInput = () => {
     const newErrors = {};
     if (!names.map(s => s.name).includes(studentName)) {
@@ -48,6 +50,7 @@ function AttendanceHistory({username}) {
     return Object.keys(newErrors).length === 0;
   };
 
+  // Handles the form submission to fetch attendance history for the selected student.
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateInput()) {
@@ -77,6 +80,8 @@ function AttendanceHistory({username}) {
       <div className="content">
       <h1>Attendance History for {studentName}</h1>
         <form onSubmit={handleSubmit}>
+          {/* This html section allows the user to select which student they wish to see the attendance of, while also being
+          able to manually enter a name if they wish. */}
           <datalist id="mylist">
           {names.map((sname, index) => (
           <option key={index} value={sname.name}>
@@ -86,6 +91,7 @@ function AttendanceHistory({username}) {
           <input type="search" list="mylist" placeholder="Enter Student's Name" id="list" value={studentName} onChange={(e) => setStudentName(e.target.value)}></input>
           <button type="submit">Submit</button>
         </form>
+        {/* If the user has submitted a valid name, display a table showing the student's attendance history. */}
         {(enable === 1) &&
           <div>
             <table border="1" cellPadding="8" cellSpacing="0">

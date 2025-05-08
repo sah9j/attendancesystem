@@ -8,6 +8,7 @@ function ViewAttendancePercentage({username}) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    // Fetches the attendance data for the student when the component mounts.
     useEffect(() => {
         async function fetchAttendance() {
             try {
@@ -89,6 +90,8 @@ function ViewAttendancePercentage({username}) {
             <div className="content">
                 <h1>Attendance Percentage for {studentName || username}</h1>
                 
+                {/* This code section will display different text based on if the data is loading, there's an error, or if the data
+        was successfully loaded. */}
                 {loading ? (
                     <p>Loading attendance data...</p>
                 ) : error ? (
