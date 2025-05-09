@@ -5,9 +5,16 @@
 // This ensures that the server can accept requests from the frontend application, as 3000 is the port where the frontend 
 // is running.
 header("Access-Control-Allow-Origin: http://localhost:3000");
-header("Access-Control-Allow-Methods: GET, POST");
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
 header("Content-Type: application/json");
+
+
+// Handle OPTIONS preflight requests
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit;
+}
 
 // Database connection
 $host = 'localhost';

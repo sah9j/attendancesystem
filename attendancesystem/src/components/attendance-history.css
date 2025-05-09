@@ -15,6 +15,16 @@
 .attendance-history table{
     margin-bottom: 3rem;
 }
+
+th {
+    background-color: #513c3c32;
+    font-weight: bold;
+}
+
+tr {
+    background-color: #f9f9f9;
+}
+
 .attendance-history input{
     text-align: center;
     font-size: 2rem;

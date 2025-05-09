@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import TeacherNavbar from './TeacherNavbar';
+import { useTable, useSortBy } from "react-table";
 import './attendance-history.css';
 
 function AttendanceHistory({username}) {
@@ -9,6 +10,25 @@ function AttendanceHistory({username}) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [enable, setEnable] = useState(0);
+
+  const columns = useMemo(
+    () => [
+      { Header: "Course", accessor: "course" },
+      { Header: "Date", accessor: "date" },
+      { Header: "Status", accessor: "attendance" }
+    ],
+    []
+  );
+
+  const data = useMemo(() => history || [], [history]);
+
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    rows,
+    prepareRow
+  } = useTable({ columns, data }, useSortBy);
 
   // Fetches the student names from the API when the component mounts.
   useEffect(() => {
@@ -94,22 +114,33 @@ function AttendanceHistory({username}) {
         {/* If the user has submitted a valid name, display a table showing the student's attendance history. */}
         {(enable === 1) &&
           <div>
-            <table border="1" cellPadding="8" cellSpacing="0">
-              <thead>
-                <tr>
-                  <th>Course</th>
-                  <th>Date</th>
-                  <th>Status</th>
+          <p>Click on the column headers to sort the table by the specified column!</p>
+            <table {...getTableProps()} border="1" cellPadding="8" cellSpacing="0">
+            <thead>
+              {headerGroups.map((headerGroup) => (
+                <tr {...headerGroup.getHeaderGroupProps()}>
+                  {headerGroup.headers.map((column) => (
+                    <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                      {column.render("Header")}
+                      <span>
+                        {column.isSorted ? (column.isSortedDesc ? " 🔽" : " 🔼") : ""}
+                      </span>
+                    </th>
+                  ))}
                 </tr>
-              </thead>
-              <tbody>
-                {history.map((record, index) => (
-                  <tr key={index}>
-                    <td>{record.course}</td>
-                    <td>{record.date}</td>
-                    <td>{record.attendance}</td>
-                  </tr>
-                ))}
+              ))}
+            </thead>
+              <tbody {...getTableBodyProps()}>
+                {rows.map((row) => {
+                  prepareRow(row);
+                  return (
+                    <tr {...row.getRowProps()}>
+                      {row.cells.map((cell) => (
+                        <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                      ))}
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
