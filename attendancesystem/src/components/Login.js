@@ -52,7 +52,6 @@ const Login = ({setUsername, role, setRole}) => {
       setRole(result.role); 
       userrole = result.role;
       setUsername(formData.username);
-      console.log('Role:', result.role);
       }
     }
     setErrors(newErrors);
@@ -65,7 +64,6 @@ const Login = ({setUsername, role, setRole}) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { isValid, userrole } = await validateForm();
-    console.log('User Role:', userrole);
     if (isValid) {
       console.log('Login form submitted:', formData);
       // Redirect based on role

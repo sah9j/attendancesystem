@@ -26,7 +26,6 @@ function ViewAttendancePercentage({username}) {
                 }
                 
                 const result = await response.json();
-                console.log(result);
                 
                 // Extract student name if available in the API response
                 if (result.student_name) {

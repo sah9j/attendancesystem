@@ -46,7 +46,6 @@ function AttendanceHistory({username}) {
         }
         
         const result = await response.json();
-        console.log(result);
         setNames(result || []);
         setLoading(false);
       } catch (error) {
@@ -85,7 +84,6 @@ function AttendanceHistory({username}) {
 
         const data = await response.json();
         setHistory(data.data || []);
-        console.log(data);
         setEnable(1);
         setLoading(false);
       } catch (error) {
