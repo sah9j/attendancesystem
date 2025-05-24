@@ -11,6 +11,7 @@ function AttendanceHistory({username}) {
   const [error, setError] = useState(null);
   const [enable, setEnable] = useState(0);
 
+  // Store the headers for the table.
   const columns = useMemo(
     () => [
       { Header: "Course", accessor: "course" },
@@ -20,8 +21,11 @@ function AttendanceHistory({username}) {
     []
   );
 
+  // Store the data for the table.
+  // This is done to prevent errors.
   const data = useMemo(() => history || [], [history]);
 
+  // Use the useTable hook to create the table instance.
   const {
     getTableProps,
     getTableBodyProps,
@@ -114,6 +118,7 @@ function AttendanceHistory({username}) {
           <div>
           <p>Click on the column headers to sort the table by the specified column!</p>
             <table {...getTableProps()} border="1" cellPadding="8" cellSpacing="0">
+            {/* This creates the table headers and configures them as buttons, which can be used for sorting the table. */}
             <thead>
               {headerGroups.map((headerGroup) => (
                 <tr {...headerGroup.getHeaderGroupProps()}>
@@ -121,13 +126,14 @@ function AttendanceHistory({username}) {
                     <th {...column.getHeaderProps(column.getSortByToggleProps())}>
                       {column.render("Header")}
                       <span>
-                        {column.isSorted ? (column.isSortedDesc ? " 🔽" : " 🔼") : ""}
+                        {column.isSorted ? (column.isSortedDesc ? " 🢁" : " 🢃") : ""}
                       </span>
                     </th>
                   ))}
                 </tr>
               ))}
             </thead>
+            {/* This takes the data for the table rows and prints them out, using the properties from react-table. */}
               <tbody {...getTableBodyProps()}>
                 {rows.map((row) => {
                   prepareRow(row);
